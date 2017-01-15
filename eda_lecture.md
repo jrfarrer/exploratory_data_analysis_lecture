@@ -677,4 +677,7 @@ References
 ========================================================
 type: sub-section
 
+[R for Data Science](http://r4ds.had.co.nz/exploratory-data-analysis.html)
+
 [dplyr tutorial](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
+
