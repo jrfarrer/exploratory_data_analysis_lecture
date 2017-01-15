@@ -1,0 +1,264 @@
+<div class="footer" style="margin-top;">Intro to EDA</div>
+Exploratory Data Analysis
+========================================================
+author: Jordan Farrer
+date: 2016-01-19
+autosize: true
+transition: rotate
+css: jrf_style.css
+
+```{r setup, include=FALSE}
+# Set options for the rmarkdown file
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = 'center', width = 200)
+```
+
+Agenda
+========================================================
+
+1. EDA in data analysis project
+2. tidyverse Fundamentals
+3. EDA Examples
+
+Role of EDA
+====================================
+type: sub-section
+
+Data Analyis Lifecycle
+========================================================
+
+<center>![](http://r4ds.had.co.nz/diagrams/data-science-explore.png)</center>
+
+What is EDA?
+========================================================
+
+**Exporatory Data Analysis** : ask questions, uncover facets of your data, but no conclusive results
+
+- Objective: know your data inside and out
+- There is no right way
+- It's a **creative process**
+- Better questions = better understanding
+
+Balancing Act
+========================================================
+left:40%
+
+Data Integrity vs Intricate Questions
+
+![](http://productinnovationnow.com/wp-content/uploads/2013/06/Balance-Freedom-and-Control.jpg)
+***
+|Role|Description|
+|---|:---:|
+|Consulting Manager|Focused on data integrity (CYA)|
+|Statistician|Jumps to complex, intricate questions|
+|Data Scientist|Balances both|
+
+Roadmap of Questions
+========================================================
+
+1. Data Integrity
+  + Record counts
+  + Missing values
+  + Unusual values
+2. Intricate Questions
+  + Variation
+  + Covariation
+      + Two Continuous Variables
+      + One Continuous and One Categorical
+      + Two Categorial
+  + Patterns
+  
+  
+tidyverse Fundemenals
+====================================
+type: sub-section
+
+
+tidyverse
+========================================================
+
+```{r}
+library(tidyverse)
+```
+
+<center>![](tidyverse.png)</center>
+
+[tidyverse](https://github.com/tidyverse/tidyverse) is a collection of R packages that share common philosophies and are designed to work together
+
+- created mostly by Hadley Wickam (R-God) and maintained by RStudio
+
+R-God
+========================================================
+
+<center>![](https://pix-media.priceonomics-media.com/blog/1001/HadleyObama.png)</center>
+
+Packages Discussed Today
+========================================================
+
+**dplyr** : data manipulation
+
+**ggplot2** : grammar of graphics
+
+dplyr
+========================================================
+
+
+Set of simple *"verbs"* - functions that correspond to the most common data manipulation tasks 
+- help you translate those thoughts into code
+- purposefully constrains your options
+- creates readable code (no guessing why you're doing that)
+
+The Verbs
+========================================================
+
+|dplyr verb|SQL equivalent|Action|
+|---|---|---|
+|`filter()`|WHERE|Limit to certain condition|
+|`select()`|SELECT|Choose certain variables|
+|`distinct()`|DISTINCT|De-duplicate resultset|
+|`arrange()`|ORDER BY|Order results|
+|`rename()`|SELECT|Rename variables|
+|`mutate()`|SELECT|Create new varaiable|
+|`group_by()`|GROUP BY |Group based on |
+|`summarise()`|SELECT|Create new variable in grouped setting|
+
+Flights Data
+========================================================
+
+```{r}
+library(nycflights13)
+
+flights
+```
+
+Dataset
+- 336,776 flights that departed from New York City in 2013
+- From the [US Bureau of Transportation Statistics](http://www.transtats.bts.gov/DatabaseInfo.asp?DB_ID=120&Link=0)
+
+filter - 1
+========================================================
+
+```{r}
+flights %>%
+  filter(month == 1 &  day == 1)
+```
+
+
+filter - 2
+========================================================
+
+```{r}
+flights %>%
+  filter(dest %in% c("PHL","SLC") & month <= 6)
+```
+
+select
+========================================================
+
+```{r}
+flights %>%
+  filter(dest %in% c("PHL","SLC") & month <= 6) %>%
+  select(origin, dest, carrier)
+```
+
+
+distinct
+========================================================
+
+```{r}
+flights %>%
+  filter(dest %in% c("PHL","SLC") & month <= 6) %>%
+  select(origin, dest, carrier) %>% 
+  distinct()
+```
+
+arrange
+========================================================
+
+```{r}
+flights %>%
+  filter(dest %in% c("PHL","SLC") & month <= 6) %>%
+  select(origin, dest, carrier) %>% 
+  distinct() %>%
+  arrange(origin, desc(dest), carrier)
+```
+
+rename
+========================================================
+
+```{r}
+flights %>%
+  filter(dest %in% c("PHL","SLC") & month <= 6) %>%
+  select(origin, dest, carrier) %>% 
+  distinct() %>%
+  arrange(origin, desc(dest), carrier) %>%
+  rename(airline = carrier)
+```
+
+mutate
+========================================================
+
+```{r}
+flights %>%
+  mutate(
+    gain = arr_delay - dep_delay
+  , speed = distance / air_time * 60
+  , gain_per_hour = gain / (air_time / 60)
+  ) %>% 
+  select(dep_delay, arr_delay, gain, distance, distance, air_time, speed, gain_per_hour)
+```
+
+group_by / summarise - 1
+========================================================
+
+```{r}
+flights %>%
+  group_by(origin) %>%
+  summarise(
+    n = n()
+    , avg_delay = mean(dep_delay, na.rm = TRUE)
+  )
+```
+
+
+summarise
+========================================================
+
+```{r}
+flights %>%
+  summarise(
+    n = n()
+    , destinations = n_distinct(dest)
+    , avg_delay = mean(dep_delay, na.rm = TRUE)
+  )
+```
+
+group_by / summarise - 2
+========================================================
+
+```{r}
+flights %>%
+  group_by(origin) %>%
+  summarise(
+      destinations = n_distinct(dest)
+    , avg_distance = mean(distance, na.rm = TRUE)
+  )
+```
+
+group_by / summarise - 3
+========================================================
+
+What is the farthest flight to leave NYC?
+
+```{r}
+flights %>%
+  group_by(origin, dest) %>%
+  summarise(
+      n = n()
+    , min = min(distance)
+    , max = max(distance)
+    , median = median(distance)
+  ) %>%
+  arrange(desc(median))
+```
+
+

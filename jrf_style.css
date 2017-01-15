@@ -1,0 +1,16 @@
+.footer {
+    color: black; 
+    background: white;
+    position: fixed; 
+    top: 95%;
+    text-align:center; 
+    width:100%;
+    font-family: sans-serif;
+    font-size:75%;
+}
+
+.reveal pre code {
+  font-size: .8em
+}
+
+
