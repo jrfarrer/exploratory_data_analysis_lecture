@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align =
 Agenda
 ========================================================
 
-1. EDA in data analysis project
+1. Role of EDA
 2. tidyverse Fundamentals
 3. EDA Examples
 
@@ -112,13 +112,13 @@ The Verbs
 
 |dplyr verb|SQL equivalent|Action|
 |---|---|---|
-|`filter()`|WHERE|Limit to certain condition|
-|`select()`|SELECT|Choose certain variables|
-|`distinct()`|DISTINCT|De-duplicate resultset|
+|`filter()`|WHERE|Limit based on condition|
+|`select()`|SELECT|Choose only certain variables|
+|`distinct()`|DISTINCT|De-duplicate result-set|
 |`arrange()`|ORDER BY|Order results|
 |`rename()`|SELECT|Rename variables|
 |`mutate()`|SELECT|Create new varaiable|
-|`group_by()`|GROUP BY |Group based on |
+|`group_by()`|GROUP BY |Group rows|
 |`summarise()`|SELECT|Create new variable in grouped setting|
 
 Flights Data
@@ -261,4 +261,137 @@ flights %>%
   arrange(desc(median))
 ```
 
+ggplot2
+========================================================
 
+- [Grammar of Graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448) : abstraction of how to build visual stories with data
+- Forget powerpoint or excel
+
+ggplot2 Examples - 1
+========================================================
+
+<center>![baseball](./eda_lecture-figure/ggplot2_2.png)<center>
+
+ggplot2 Examples - 2
+========================================================
+
+<center>![ROC](./eda_lecture-figure/ggplot2_4.png)<center>
+
+ggplot2 Examples - 3
+========================================================
+
+<center>![distributions](./eda_lecture-figure/ggplot2_8.png)<center>
+
+ggplot2 Examples - 4
+========================================================
+
+<center>![spine](./eda_lecture-figure/ggplot2_10.png)<center>
+
+ggplot2 Examples - 5
+========================================================
+
+<center>![LASSO](./eda_lecture-figure/ggplot2_11.png)<center>
+
+Basic Structure
+========================================================
+
+`ggplot(data, aes(x = *, y = *)) + geom_***`
+
+```{r}
+ggplot(data = mtcars, mapping = aes(x = hp, y = mpg)) +
+  geom_point()
+```
+
+Common Aesethics
+========================================================
+
+- x
+- y
+- colour
+- fill
+- alpha
+- size
+- shape
+
+Common Geoms
+========================================================
+
+- geom_point
+- geom_bar
+- geom_boxplot
+- geom_histogram
+- geom_line
+- geom_smooth
+
+See documentation ([docs.ggplot2.org/current](http://docs.ggplot2.org/current)) for more
+
+geom_bar
+========================================================
+
+```{r}
+ggplot(diamonds, aes(x = cut)) +
+  geom_bar()
+```
+geom_point with colour
+========================================================
+
+```{r}
+ggplot(diamonds, aes(x = carat, y = price, colour = cut)) +
+  geom_point() +
+  labs(title = "Diamonds Dataset", subtitle = "Carat vs Price")
+```
+
+Example EDA
+====================================
+type: sub-section
+
+1. Data Integrity Checks
+2. Intricate Questions
+
+Look at the Data
+====================================
+
+```{r}
+flights
+```
+
+Data has **`r nrow(flights)`** rows and **`r ncol(flights)`** columns using:
+
+`` `r '\x60r nrow(flights)\x60'` `` and `` `r '\x60r ncol(flights)\x60'` ``
+
+Missing Values
+====================================
+
+```{r}
+flights %>%
+  filter(!complete.cases(.))
+```
+
+```{r}
+sapply(flights, function(x) sum(is.na(x))) 
+```
+
+Summary of Columns
+====================================
+
+```{r}
+flights %>%
+  select(1:10) %>%
+  summary
+```
+
+Unusual Values
+====================================
+
+```{r}
+ggplot(flights, aes(x = air_time)) +
+  geom_histogram()
+  
+```
+
+
+References
+========================================================
+type: sub-section
+
+[dplyr tutorial](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
