@@ -1,4 +1,4 @@
-<div class="footer" style="margin-top;">Intro to EDA</div>
+<div class="footer" style="margin-top;">Intro to EDA: <a target="_blank" href = "bit.ly/stats_eda">bit.ly/stats_eda</a></div>
 Exploratory Data Analysis
 ========================================================
 author: Jordan Farrer
