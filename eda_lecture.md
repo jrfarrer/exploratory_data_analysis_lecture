@@ -494,16 +494,14 @@ ggplot(data = mtcars, mapping = aes(x = hp, y = mpg)) +
 
 <img src="eda_lecture-figure/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" style="display: block; margin: auto;" />
 
-Common Aesthetics
+Fundemental Concept
 ========================================================
 
-- x
-- y
-- colour
-- fill
-- alpha
-- size
-- shape
+**Geometric objects** (geom_\*) have **aesthetic attributes** (aes(x = \*, color = \*))
+
+When we visualize data we **MAP** our data to aesethics.
+
+<center>![foobar](./viz/foo_bar_zaz.png)</center>
 
 Common Geoms
 ========================================================
@@ -516,6 +514,17 @@ Common Geoms
 - geom_smooth
 
 See documentation ([docs.ggplot2.org/current](http://docs.ggplot2.org/current)) for more
+
+Common Aesthetics
+========================================================
+
+- x
+- y
+- colour
+- fill
+- alpha
+- size
+- shape
 
 geom_bar
 ========================================================
@@ -1175,3 +1184,5 @@ type: sub-section
 [dplyr tutorial](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
 
 [gapminder ggplot tutorial](https://github.com/jennybc/ggplot2-tutorial/blob/master/gapminder-ggplot2-scatterplot.md)
+
+[ggplot to learn visualization](http://sharpsightlabs.com/blog/r-package-think-about-visualization/)
