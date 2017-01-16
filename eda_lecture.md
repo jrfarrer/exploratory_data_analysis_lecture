@@ -78,7 +78,7 @@ tidyverse
 library(tidyverse)
 ```
 
-<center>![](tidyverse.png)</center>
+<center>![](./viz/tidyverse.png)</center>
 
 [tidyverse](https://github.com/tidyverse/tidyverse) is a collection of R packages that share common philosophies and are designed to work together
 
@@ -460,27 +460,27 @@ ggplot2
 ggplot2 Examples - 1
 ========================================================
 
-<center>![baseball](./eda_lecture-figure/ggplot2_2.png)<center>
+<center>![baseball](./viz/ggplot2_2.png)<center>
 
 ggplot2 Examples - 2
 ========================================================
 
-<center>![ROC](./eda_lecture-figure/ggplot2_4.png)<center>
+<center>![ROC](./viz/ggplot2_4.png)<center>
 
 ggplot2 Examples - 3
 ========================================================
 
-<center>![distributions](./eda_lecture-figure/ggplot2_8.png)<center>
+<center>![distributions](./viz/ggplot2_8.png)<center>
 
 ggplot2 Examples - 4
 ========================================================
 
-<center>![spine](./eda_lecture-figure/ggplot2_10.png)<center>
+<center>![spine](./viz/ggplot2_10.png)<center>
 
 ggplot2 Examples - 5
 ========================================================
 
-<center>![LASSO](./eda_lecture-figure/ggplot2_11.png)<center>
+<center>![LASSO](./viz/ggplot2_11.png)<center>
 
 Basic Structure
 ========================================================
@@ -672,6 +672,498 @@ ggplot(flights, aes(x = air_time)) +
 
 <img src="eda_lecture-figure/unnamed-chunk-21-1.png" title="plot of chunk unnamed-chunk-21" alt="plot of chunk unnamed-chunk-21" style="display: block; margin: auto;" />
 
+Gapminder Dataset
+====================================
+
+
+```r
+library(gapminder)
+gapminder
+```
+
+```
+# A tibble: 1,704 × 6
+       country continent  year lifeExp      pop gdpPercap
+        <fctr>    <fctr> <int>   <dbl>    <int>     <dbl>
+1  Afghanistan      Asia  1952  28.801  8425333  779.4453
+2  Afghanistan      Asia  1957  30.332  9240934  820.8530
+3  Afghanistan      Asia  1962  31.997 10267083  853.1007
+4  Afghanistan      Asia  1967  34.020 11537966  836.1971
+5  Afghanistan      Asia  1972  36.088 13079460  739.9811
+6  Afghanistan      Asia  1977  38.438 14880372  786.1134
+7  Afghanistan      Asia  1982  39.854 12881816  978.0114
+8  Afghanistan      Asia  1987  40.822 13867957  852.3959
+9  Afghanistan      Asia  1992  41.674 16317921  649.3414
+10 Afghanistan      Asia  1997  41.763 22227415  635.3414
+# ... with 1,694 more rows
+```
+
+Data Integrity - 1
+====================================
+
+Check for missing data
+
+
+```r
+gapminder %>%
+  filter(!complete.cases(.))
+```
+
+```
+# A tibble: 0 × 6
+# ... with 6 variables: country <fctr>, continent <fctr>, year <int>,
+#   lifeExp <dbl>, pop <int>, gdpPercap <dbl>
+```
+
+
+Data Integrity - 2
+====================================
+
+Do all the countries have the same number of years?
+
+
+```r
+gapminder %>% 
+  group_by(country) %>% 
+  summarise(years_per_country = n()) %>%
+  group_by(years_per_country) %>%
+  summarise(countries = n())
+```
+
+```
+# A tibble: 1 × 2
+  years_per_country countries
+              <int>     <int>
+1                12       142
+```
+
+Data Integrity - 3
+====================================
+
+What years are included in the dataset?
+
+
+```r
+gapminder %>%
+  distinct(year)
+```
+
+```
+# A tibble: 12 × 1
+    year
+   <int>
+1   1952
+2   1957
+3   1962
+4   1967
+5   1972
+6   1977
+7   1982
+8   1987
+9   1992
+10  1997
+11  2002
+12  2007
+```
+
+Data Integrity - 4
+====================================
+
+
+```r
+  gapminder %>%
+    group_by(continent) %>%
+    summarize(n_obs = n(), n_countries = n_distinct(country)) %>%
+    mutate(years = n_obs / n_countries)
+```
+
+```
+# A tibble: 5 × 4
+  continent n_obs n_countries years
+     <fctr> <int>       <int> <dbl>
+1    Africa   624          52    12
+2  Americas   300          25    12
+3      Asia   396          33    12
+4    Europe   360          30    12
+5   Oceania    24           2    12
+```
+
+
+Data Integrity - 5
+====================================
+
+What is the median life expectancy for each continent in 2007 (last year)?
+
+
+```r
+gapminder %>%
+  filter(year == 2007) %>%
+  group_by(continent) %>%
+  summarise(lifeExp = median(lifeExp))
+```
+
+```
+# A tibble: 5 × 2
+  continent lifeExp
+     <fctr>   <dbl>
+1    Africa 52.9265
+2  Americas 72.8990
+3      Asia 72.3960
+4    Europe 78.6085
+5   Oceania 80.7195
+```
+
+Data Integrity - 6
+====================================
+
+Basic summary
+
+
+```r
+gapminder %>%
+  summary()
+```
+
+```
+        country        continent        year         lifeExp     
+ Afghanistan:  12   Africa  :624   Min.   :1952   Min.   :23.60  
+ Albania    :  12   Americas:300   1st Qu.:1966   1st Qu.:48.20  
+ Algeria    :  12   Asia    :396   Median :1980   Median :60.71  
+ Angola     :  12   Europe  :360   Mean   :1980   Mean   :59.47  
+ Argentina  :  12   Oceania : 24   3rd Qu.:1993   3rd Qu.:70.85  
+ Australia  :  12                  Max.   :2007   Max.   :82.60  
+ (Other)    :1632                                                
+      pop              gdpPercap       
+ Min.   :6.001e+04   Min.   :   241.2  
+ 1st Qu.:2.794e+06   1st Qu.:  1202.1  
+ Median :7.024e+06   Median :  3531.8  
+ Mean   :2.960e+07   Mean   :  7215.3  
+ 3rd Qu.:1.959e+07   3rd Qu.:  9325.5  
+ Max.   :1.319e+09   Max.   :113523.1  
+                                       
+```
+
+Plots by Data Types
+===
+
+|Data|Plots|
+|----|---|
+|One Continuous|Histogram|
+|One Continuous + One Categorial|Boxplot|
+|Two Continuous|Scatter Plot|
+|Three Continuous|Scatter Plot + Size|
+|Two Continuous + One Categorial|Scatter Plot + Color|
+|Catgorial with *reasonable number of levels*|Faceting!!|
+
+Note: Time is always the x-axis.
+
+One Continous
+===
+
+<p class = "question_master">What is the distribution of life expectacy in 2007?</p>
+
+
+```r
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot(aes(x = lifeExp)) +
+  geom_histogram(binwidth = 2)
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-29-1.png" title="plot of chunk unnamed-chunk-29" alt="plot of chunk unnamed-chunk-29" style="display: block; margin: auto;" />
+
+
+One Continuous + One Categorial
+===
+
+<p class = "question_master">What is the distribution of life expectacy in 2007 by continent?</p>
+
+
+```r
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot(aes(x = continent, y = lifeExp)) +
+  geom_boxplot()
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-30-1.png" title="plot of chunk unnamed-chunk-30" alt="plot of chunk unnamed-chunk-30" style="display: block; margin: auto;" />
+
+Who are the Outliers?
+===
+
+
+```r
+gapminder %>%
+  filter(year == 2007 & continent %in% c("Americas","Asia")) %>%
+  group_by(continent) %>%
+  filter(rank(lifeExp) == 1)
+```
+
+```
+Source: local data frame [2 x 6]
+Groups: continent [2]
+
+      country continent  year lifeExp      pop gdpPercap
+       <fctr>    <fctr> <int>   <dbl>    <int>     <dbl>
+1 Afghanistan      Asia  2007  43.828 31889923  974.5803
+2       Haiti  Americas  2007  60.916  8502814 1201.6372
+```
+
+Two Continuous
+===
+
+<p class = "question_master">What is the relationship between GDP per capita and life expectacy?</p>
+
+
+```r
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp)) + 
+  geom_point()
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-32-1.png" title="plot of chunk unnamed-chunk-32" alt="plot of chunk unnamed-chunk-32" style="display: block; margin: auto;" />
+
+Let's log that!!
+===
+
+<p class = "question_master">Relationship is clearer</p>
+
+
+```r
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp)) + 
+  geom_point() +
+  scale_x_log10()
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-33-1.png" title="plot of chunk unnamed-chunk-33" alt="plot of chunk unnamed-chunk-33" style="display: block; margin: auto;" />
+
+Two Continuous + One Categorial (few)
+===
+
+<p class = "question_master">What is the relationship between GDP per capita and life expectacy by continent?</p>
+
+
+```r
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, colour = continent)) + 
+  geom_point() +
+  scale_x_log10()
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-34-1.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" />
+
+Two Continuous + One Categorial (many)
+===
+
+<p class = "question_master">What is the relationship between GDP per capita and life expectacy over time?</p>
+
+
+```r
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, colour = year)) + 
+  geom_point() +
+  scale_x_log10()
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-35-1.png" title="plot of chunk unnamed-chunk-35" alt="plot of chunk unnamed-chunk-35" style="display: block; margin: auto;" />
+
+Three Continuous
+===
+
+<p class = "question_master">What is the relationship between GDP per capita, life expectacy, and population in 2007?</p>
+
+
+```r
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop)) + 
+  geom_point() +
+  scale_x_log10()
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-36-1.png" title="plot of chunk unnamed-chunk-36" alt="plot of chunk unnamed-chunk-36" style="display: block; margin: auto;" />
+
+Let's Facet!
+===
+
+<center>![facet](http://media2.giphy.com/media/HUlrpol0gn6i4/giphy.gif)</center>
+
+Variation - 1
+===
+
+<p class = "question_master">What does the distribution of life expectacy look like by continent?</p>
+
+
+```r
+gapminder %>%
+  ggplot(aes(x = year, y = lifeExp, colour = continent)) +
+  geom_point() # position = 'jitter'
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-37-1.png" title="plot of chunk unnamed-chunk-37" alt="plot of chunk unnamed-chunk-37" style="display: block; margin: auto;" />
+
+Variation - 2
+===
+
+<p class = "question_master">What does the distribution of life expectacy look like by continent?</p>
+
+
+```r
+gapminder %>%
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_point() +
+  geom_smooth(method = 'loess', se = FALSE) + 
+  facet_wrap(~ continent)
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-38-1.png" title="plot of chunk unnamed-chunk-38" alt="plot of chunk unnamed-chunk-38" style="display: block; margin: auto;" />
+
+Data Integrity (again)
+===
+
+<p class = "question_master">Who is Oceania?</p>
+
+
+```r
+gapminder %>%
+  filter(continent == "Oceania") %>%
+  distinct(country)
+```
+
+```
+# A tibble: 2 × 1
+      country
+       <fctr>
+1   Australia
+2 New Zealand
+```
+
+Data Integrity (again)
+===
+
+<p class = "question_master">What if we included them as Asia?</p>
+
+
+```r
+gapminder %>%
+  mutate(continent = forcats::fct_recode(continent, Asia = "Oceania")) %>%
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_point() +
+  geom_smooth(method = 'loess', se = FALSE) + 
+  facet_wrap(~ continent)
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-40-1.png" title="plot of chunk unnamed-chunk-40" alt="plot of chunk unnamed-chunk-40" style="display: block; margin: auto;" />
+
+One Continous + Two Categorial
+===
+
+<p class = "question_master">What if we wanted line charts instead?</p>
+
+
+```r
+gapminder %>%
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_point(alpha = 2/3) +
+  geom_line(aes(group = country), alpha = 1/3) +
+  geom_smooth(method = 'loess', se = FALSE) + 
+  facet_wrap(~ continent)
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-41-1.png" title="plot of chunk unnamed-chunk-41" alt="plot of chunk unnamed-chunk-41" style="display: block; margin: auto;" />
+
+One Continous + One Categorial (rather than boxplot)
+===
+
+<p class = "question_master">What is the distribution of life expectacy (in 2007) by continent?</p>
+
+
+```r
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot(aes(x = lifeExp)) +
+  geom_histogram(binwidth = 2) +
+  facet_wrap(~ continent)
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-42-1.png" title="plot of chunk unnamed-chunk-42" alt="plot of chunk unnamed-chunk-42" style="display: block; margin: auto;" />
+
+Two Continous + Two Categorial
+===
+
+What is the relationship between GDP per capita and life expectancy across continents and time?
+
+
+```r
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, colour = continent, alpha = year)) + 
+  geom_point() + 
+  scale_x_log10()
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-43-1.png" title="plot of chunk unnamed-chunk-43" alt="plot of chunk unnamed-chunk-43" style="display: block; margin: auto;" />
+
+Add in Regression Line
+===
+
+
+```r
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, colour = continent)) + 
+  geom_point(aes(alpha = year)) + 
+  geom_smooth(method = 'lm', se = FALSE) + 
+  scale_x_log10()
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-44-1.png" title="plot of chunk unnamed-chunk-44" alt="plot of chunk unnamed-chunk-44" style="display: block; margin: auto;" />
+
+Linear Model for Each Year and Continent
+
+
+```r
+gapminder %>%
+  filter(country != "Kuwait") %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, colour = continent)) + 
+  geom_point() + 
+  geom_smooth(method = 'lm', se = FALSE) + 
+  facet_wrap(~ year) + 
+  scale_x_log10()
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-45-1.png" title="plot of chunk unnamed-chunk-45" alt="plot of chunk unnamed-chunk-45" style="display: block; margin: auto;" />
+
+Particular Observations
+===
+
+Are there any trends in particular countries over time?
+
+
+```r
+gapminder %>%
+  filter(country %in% c("Canada", "Rwanda", "Cambodia", "Mexico", "Zimbabwe")) %>%
+  ggplot(aes(x = year, y = lifeExp, colour = country)) + 
+  geom_point() + 
+  geom_line() +
+  labs(title = "Sad Evidence of Human Conflict")
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-46-1.png" title="plot of chunk unnamed-chunk-46" alt="plot of chunk unnamed-chunk-46" style="display: block; margin: auto;" />
+
+Let's end on a positive note
+===
+
+How is the distribution of life expecteny evolving over time?
+
+
+```r
+gapminder %>%
+  ggplot(aes(x = factor(year), y = lifeExp)) +
+  geom_boxplot() +
+  labs(x = "year")
+```
+
+<img src="eda_lecture-figure/unnamed-chunk-47-1.png" title="plot of chunk unnamed-chunk-47" alt="plot of chunk unnamed-chunk-47" style="display: block; margin: auto;" />
 
 References
 ========================================================
@@ -681,3 +1173,4 @@ type: sub-section
 
 [dplyr tutorial](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
 
+[gapminder ggplot tutorial](https://github.com/jennybc/ggplot2-tutorial/blob/master/gapminder-ggplot2-scatterplot.md)

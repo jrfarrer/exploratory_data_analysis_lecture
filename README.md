@@ -1,6 +1,6 @@
 As a TA for Wharton's Statistics Department's [STAT701 - Modern Data Mining](https://statistics.wharton.upenn.edu/programs/mba/course-descriptions/), I prepared an 1.5 hour lecture on the basics of exploratory data analysis using tidyverse.
 
-**Presentation**: [bit.ly/stats_eda](bit.ly/stats_eda)
+**Presentation**: [bit.ly/stats_eda](https://bit.ly/stats_eda)
 
 Much of the material and examples is derived from 
 

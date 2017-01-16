@@ -9,7 +9,7 @@ css: jrf_style.css
 
 ```{r setup, include=FALSE}
 # Set options for the rmarkdown file
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = 'center', width = 200)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 11, fig.height = 6.5, fig.align = 'center', width = 200, cache = FALSE)
 ```
 
 Agenda
@@ -80,7 +80,7 @@ tidyverse
 library(tidyverse)
 ```
 
-<center>![](tidyverse.png)</center>
+<center>![](./viz/tidyverse.png)</center>
 
 [tidyverse](https://github.com/tidyverse/tidyverse) is a collection of R packages that share common philosophies and are designed to work together
 
@@ -270,27 +270,27 @@ ggplot2
 ggplot2 Examples - 1
 ========================================================
 
-<center>![baseball](./eda_lecture-figure/ggplot2_2.png)<center>
+<center>![baseball](./viz/ggplot2_2.png)<center>
 
 ggplot2 Examples - 2
 ========================================================
 
-<center>![ROC](./eda_lecture-figure/ggplot2_4.png)<center>
+<center>![ROC](./viz/ggplot2_4.png)<center>
 
 ggplot2 Examples - 3
 ========================================================
 
-<center>![distributions](./eda_lecture-figure/ggplot2_8.png)<center>
+<center>![distributions](./viz/ggplot2_8.png)<center>
 
 ggplot2 Examples - 4
 ========================================================
 
-<center>![spine](./eda_lecture-figure/ggplot2_10.png)<center>
+<center>![spine](./viz/ggplot2_10.png)<center>
 
 ggplot2 Examples - 5
 ========================================================
 
-<center>![LASSO](./eda_lecture-figure/ggplot2_11.png)<center>
+<center>![LASSO](./viz/ggplot2_11.png)<center>
 
 Basic Structure
 ========================================================
@@ -386,9 +386,333 @@ Unusual Values
 ```{r}
 ggplot(flights, aes(x = air_time)) +
   geom_histogram()
-  
 ```
 
+Gapminder Dataset
+====================================
+
+```{r}
+library(gapminder)
+gapminder
+```
+
+Data Integrity - 1
+====================================
+
+Check for missing data
+
+```{r}
+gapminder %>%
+  filter(!complete.cases(.))
+```
+
+
+Data Integrity - 2
+====================================
+
+Do all the countries have the same number of years?
+
+```{r}
+gapminder %>% 
+  group_by(country) %>% 
+  summarise(years_per_country = n()) %>%
+  group_by(years_per_country) %>%
+  summarise(countries = n())
+```
+
+Data Integrity - 3
+====================================
+
+What years are included in the dataset?
+
+```{r}
+gapminder %>%
+  distinct(year)
+```
+
+Data Integrity - 4
+====================================
+
+```{r}
+  gapminder %>%
+    group_by(continent) %>%
+    summarize(n_obs = n(), n_countries = n_distinct(country)) %>%
+    mutate(years = n_obs / n_countries)
+```
+
+
+Data Integrity - 5
+====================================
+
+What is the median life expectancy for each continent in 2007 (last year)?
+
+```{r}
+gapminder %>%
+  filter(year == 2007) %>%
+  group_by(continent) %>%
+  summarise(lifeExp = median(lifeExp))
+```
+
+Data Integrity - 6
+====================================
+
+Basic summary
+
+```{r}
+gapminder %>%
+  summary()
+```
+
+Plots by Data Types
+===
+
+|Data|Plots|
+|----|---|
+|One Continuous|Histogram|
+|One Continuous + One Categorial|Boxplot|
+|Two Continuous|Scatter Plot|
+|Three Continuous|Scatter Plot + Size|
+|Two Continuous + One Categorial|Scatter Plot + Color|
+|Catgorial with *reasonable number of levels*|Faceting!!|
+
+Note: Time is always the x-axis.
+
+One Continous
+===
+
+<p class = "question_master">What is the distribution of life expectacy in 2007?</p>
+
+```{r}
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot(aes(x = lifeExp)) +
+  geom_histogram(binwidth = 2)
+```
+
+
+One Continuous + One Categorial
+===
+
+<p class = "question_master">What is the distribution of life expectacy in 2007 by continent?</p>
+
+```{r}
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot(aes(x = continent, y = lifeExp)) +
+  geom_boxplot()
+```
+
+Who are the Outliers?
+===
+
+```{r}
+gapminder %>%
+  filter(year == 2007 & continent %in% c("Americas","Asia")) %>%
+  group_by(continent) %>%
+  filter(rank(lifeExp) == 1)
+```
+
+Two Continuous
+===
+
+<p class = "question_master">What is the relationship between GDP per capita and life expectacy?</p>
+
+```{r}
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp)) + 
+  geom_point()
+```
+
+Let's log that!!
+===
+
+<p class = "question_master">Relationship is clearer</p>
+
+```{r}
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp)) + 
+  geom_point() +
+  scale_x_log10()
+```
+
+Two Continuous + One Categorial (few)
+===
+
+<p class = "question_master">What is the relationship between GDP per capita and life expectacy by continent?</p>
+
+```{r}
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, colour = continent)) + 
+  geom_point() +
+  scale_x_log10()
+```
+
+Two Continuous + One Categorial (many)
+===
+
+<p class = "question_master">What is the relationship between GDP per capita and life expectacy over time?</p>
+
+```{r}
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, colour = year)) + 
+  geom_point() +
+  scale_x_log10()
+```
+
+Three Continuous
+===
+
+<p class = "question_master">What is the relationship between GDP per capita, life expectacy, and population in 2007?</p>
+
+```{r}
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop)) + 
+  geom_point() +
+  scale_x_log10()
+```
+
+Let's Facet!
+===
+
+<center>![facet](http://media2.giphy.com/media/HUlrpol0gn6i4/giphy.gif)</center>
+
+Variation - 1
+===
+
+<p class = "question_master">What does the distribution of life expectacy look like by continent?</p>
+
+```{r}
+gapminder %>%
+  ggplot(aes(x = year, y = lifeExp, colour = continent)) +
+  geom_point() # position = 'jitter'
+```
+
+Variation - 2
+===
+
+<p class = "question_master">What does the distribution of life expectacy look like by continent?</p>
+
+```{r}
+gapminder %>%
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_point() +
+  geom_smooth(method = 'loess', se = FALSE) + 
+  facet_wrap(~ continent)
+```
+
+Data Integrity (again)
+===
+
+<p class = "question_master">Who is Oceania?</p>
+
+```{r}
+gapminder %>%
+  filter(continent == "Oceania") %>%
+  distinct(country)
+```
+
+Data Integrity (again)
+===
+
+<p class = "question_master">What if we included them as Asia?</p>
+
+```{r}
+gapminder %>%
+  mutate(continent = forcats::fct_recode(continent, Asia = "Oceania")) %>%
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_point() +
+  geom_smooth(method = 'loess', se = FALSE) + 
+  facet_wrap(~ continent)
+```
+
+One Continous + Two Categorial
+===
+
+<p class = "question_master">What if we wanted line charts instead?</p>
+
+```{r}
+gapminder %>%
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_point(alpha = 2/3) +
+  geom_line(aes(group = country), alpha = 1/3) +
+  geom_smooth(method = 'loess', se = FALSE) + 
+  facet_wrap(~ continent)
+```
+
+One Continous + One Categorial (rather than boxplot)
+===
+
+<p class = "question_master">What is the distribution of life expectacy (in 2007) by continent?</p>
+
+```{r}
+gapminder %>%
+  filter(year == 2007) %>%
+  ggplot(aes(x = lifeExp)) +
+  geom_histogram(binwidth = 2) +
+  facet_wrap(~ continent)
+```
+
+Two Continous + Two Categorial
+===
+
+What is the relationship between GDP per capita and life expectancy across continents and time?
+
+```{r}
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, colour = continent, alpha = year)) + 
+  geom_point() + 
+  scale_x_log10()
+```
+
+Add in Regression Line
+===
+
+```{r}
+gapminder %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, colour = continent)) + 
+  geom_point(aes(alpha = year)) + 
+  geom_smooth(method = 'lm', se = FALSE) + 
+  scale_x_log10()
+```
+
+Linear Model for Each Year and Continent
+
+```{r}
+gapminder %>%
+  filter(country != "Kuwait") %>%
+  ggplot(aes(x = gdpPercap, y = lifeExp, colour = continent)) + 
+  geom_point() + 
+  geom_smooth(method = 'lm', se = FALSE) + 
+  facet_wrap(~ year) + 
+  scale_x_log10()
+```
+
+Particular Observations
+===
+
+Are there any trends in particular countries over time?
+
+```{r}
+gapminder %>%
+  filter(country %in% c("Canada", "Rwanda", "Cambodia", "Mexico", "Zimbabwe")) %>%
+  ggplot(aes(x = year, y = lifeExp, colour = country)) + 
+  geom_point() + 
+  geom_line() +
+  labs(title = "Sad Evidence of Human Conflict")
+```
+
+Let's end on a positive note
+===
+
+How is the distribution of life expecteny evolving over time?
+
+```{r}
+gapminder %>%
+  ggplot(aes(x = factor(year), y = lifeExp)) +
+  geom_boxplot() +
+  labs(x = "year")
+```
 
 References
 ========================================================
@@ -398,3 +722,4 @@ type: sub-section
 
 [dplyr tutorial](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
 
+[gapminder ggplot tutorial](https://github.com/jennybc/ggplot2-tutorial/blob/master/gapminder-ggplot2-scatterplot.md)
