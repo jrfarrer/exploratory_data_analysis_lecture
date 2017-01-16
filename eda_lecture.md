@@ -28,26 +28,26 @@ Data Analysis Lifecycle
 What is EDA?
 ========================================================
 
-**Exporatory Data Analysis** : ask questions, uncover facets of your data, but no conclusive results
+**Exporatory Data Analysis** : ask questions, uncover features of your data, but no conclusive results
 
 - Objective: know your data inside and out
 - There is no right way
 - It's a **creative process**
-- Better questions = better understanding
+- Better questions → better understanding
 
 Balancing Act
 ========================================================
 left:40%
 
-Data Integrity vs Intricate Questions
+Data Integrity vs Data Understanding
 
 ![](http://productinnovationnow.com/wp-content/uploads/2013/06/Balance-Freedom-and-Control.jpg)
 ***
-|Role|Description|
+|Role|More likely to ...|
 |---|:---:|
-|Consulting Manager|Focused on data integrity (CYA)|
-|Statistician|Jumps to complex, intricate questions|
-|Data Scientist|Balances both|
+|Engineer|Focus on data integrity|
+|Statistician|Jump to complex, intricate questions|
+|Data Scientist|Balance both|
 
 Roadmap of Questions
 ========================================================
@@ -56,19 +56,18 @@ Roadmap of Questions
   + Record counts
   + Missing values
   + Unusual values
-2. Intricate Questions
+2. Data Understanding
   + Variation
   + Covariation
       + Two Continuous Variables
       + One Continuous and One Categorical
       + Two Categorical
-  + Patterns
+  + Patterns / Anomolies
   
   
 tidyverse Fundamentals
 ====================================
 type: sub-section
-
 
 tidyverse
 ========================================================
@@ -82,7 +81,7 @@ library(tidyverse)
 
 [tidyverse](https://github.com/tidyverse/tidyverse) is a collection of R packages that share common philosophies and are designed to work together
 
-- created mostly by Hadley Wickam (R-God) and maintained by RStudio
+- created mostly by Hadley Wickam and maintained by RStudio
 
 R-God
 ========================================================
@@ -675,6 +674,8 @@ ggplot(flights, aes(x = air_time)) +
 Gapminder Dataset
 ====================================
 
+Gapminder is a non-profit in Stockholm, Sweden that puts out data on development metrics
+
 
 ```r
 library(gapminder)
@@ -714,7 +715,6 @@ gapminder %>%
 # ... with 6 variables: country <fctr>, continent <fctr>, year <int>,
 #   lifeExp <dbl>, pop <int>, gdpPercap <dbl>
 ```
-
 
 Data Integrity - 2
 ====================================
@@ -1119,7 +1119,7 @@ gapminder %>%
 <img src="eda_lecture-figure/unnamed-chunk-44-1.png" title="plot of chunk unnamed-chunk-44" alt="plot of chunk unnamed-chunk-44" style="display: block; margin: auto;" />
 
 Linear Model for Each Year and Continent
-===
+====
 
 
 ```r
