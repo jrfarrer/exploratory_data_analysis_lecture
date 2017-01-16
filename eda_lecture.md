@@ -20,7 +20,7 @@ Role of EDA
 ====================================
 type: sub-section
 
-Data Analyis Lifecycle
+Data Analysis Lifecycle
 ========================================================
 
 <center>![](http://r4ds.had.co.nz/diagrams/data-science-explore.png)</center>
@@ -61,11 +61,11 @@ Roadmap of Questions
   + Covariation
       + Two Continuous Variables
       + One Continuous and One Categorical
-      + Two Categorial
+      + Two Categorical
   + Patterns
   
   
-tidyverse Fundemenals
+tidyverse Fundamentals
 ====================================
 type: sub-section
 
@@ -115,7 +115,7 @@ The Verbs
 |`distinct()`|DISTINCT|De-duplicate result-set|
 |`arrange()`|ORDER BY|Order results|
 |`rename()`|SELECT|Rename variables|
-|`mutate()`|SELECT|Create new varaiable|
+|`mutate()`|SELECT|Create new variable|
 |`group_by()`|GROUP BY |Group rows|
 |`summarise()`|SELECT|Create new variable in grouped setting|
 
@@ -495,7 +495,7 @@ ggplot(data = mtcars, mapping = aes(x = hp, y = mpg)) +
 
 <img src="eda_lecture-figure/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" style="display: block; margin: auto;" />
 
-Common Aesethics
+Common Aesthetics
 ========================================================
 
 - x
@@ -849,18 +849,18 @@ Plots by Data Types
 |Data|Plots|
 |----|---|
 |One Continuous|Histogram|
-|One Continuous + One Categorial|Boxplot|
+|One Continuous + One Categorical|Boxplot|
 |Two Continuous|Scatter Plot|
 |Three Continuous|Scatter Plot + Size|
-|Two Continuous + One Categorial|Scatter Plot + Color|
-|Catgorial with *reasonable number of levels*|Faceting!!|
+|Two Continuous + One Categorical|Scatter Plot + Color|
+|Categorical with *reasonable number of levels*|Faceting!!|
 
 Note: Time is always the x-axis.
 
-One Continous
+One Continuous
 ===
 
-<p class = "question_master">What is the distribution of life expectacy in 2007?</p>
+<p class = "question_master">What is the distribution of life expectancy in 2007?</p>
 
 
 ```r
@@ -873,10 +873,10 @@ gapminder %>%
 <img src="eda_lecture-figure/unnamed-chunk-29-1.png" title="plot of chunk unnamed-chunk-29" alt="plot of chunk unnamed-chunk-29" style="display: block; margin: auto;" />
 
 
-One Continuous + One Categorial
+One Continuous + One Categorical
 ===
 
-<p class = "question_master">What is the distribution of life expectacy in 2007 by continent?</p>
+<p class = "question_master">What is the distribution of life expectancy in 2007 by continent?</p>
 
 
 ```r
@@ -912,7 +912,7 @@ Groups: continent [2]
 Two Continuous
 ===
 
-<p class = "question_master">What is the relationship between GDP per capita and life expectacy?</p>
+<p class = "question_master">What is the relationship between GDP per capita and life expectancy?</p>
 
 
 ```r
@@ -938,10 +938,10 @@ gapminder %>%
 
 <img src="eda_lecture-figure/unnamed-chunk-33-1.png" title="plot of chunk unnamed-chunk-33" alt="plot of chunk unnamed-chunk-33" style="display: block; margin: auto;" />
 
-Two Continuous + One Categorial (few)
+Two Continuous + One Categorical (few)
 ===
 
-<p class = "question_master">What is the relationship between GDP per capita and life expectacy by continent?</p>
+<p class = "question_master">What is the relationship between GDP per capita and life expectancy by continent?</p>
 
 
 ```r
@@ -956,7 +956,7 @@ gapminder %>%
 Two Continuous + One Categorial (many)
 ===
 
-<p class = "question_master">What is the relationship between GDP per capita and life expectacy over time?</p>
+<p class = "question_master">What is the relationship between GDP per capita and life expectancy over time?</p>
 
 
 ```r
@@ -971,7 +971,7 @@ gapminder %>%
 Three Continuous
 ===
 
-<p class = "question_master">What is the relationship between GDP per capita, life expectacy, and population in 2007?</p>
+<p class = "question_master">What is the relationship between GDP per capita, life expectancy, and population in 2007?</p>
 
 
 ```r
@@ -984,15 +984,10 @@ gapminder %>%
 
 <img src="eda_lecture-figure/unnamed-chunk-36-1.png" title="plot of chunk unnamed-chunk-36" alt="plot of chunk unnamed-chunk-36" style="display: block; margin: auto;" />
 
-Let's Facet!
+One Continuous + One Categorical (Time)
 ===
 
-<center>![facet](http://media2.giphy.com/media/HUlrpol0gn6i4/giphy.gif)</center>
-
-Variation - 1
-===
-
-<p class = "question_master">What does the distribution of life expectacy look like by continent?</p>
+<p class = "question_master">What does the distribution of life expectancy look like by continent?</p>
 
 
 ```r
@@ -1003,10 +998,15 @@ gapminder %>%
 
 <img src="eda_lecture-figure/unnamed-chunk-37-1.png" title="plot of chunk unnamed-chunk-37" alt="plot of chunk unnamed-chunk-37" style="display: block; margin: auto;" />
 
-Variation - 2
+Let's Facet!
 ===
 
-<p class = "question_master">What does the distribution of life expectacy look like by continent?</p>
+<center>![facet](http://media2.giphy.com/media/HUlrpol0gn6i4/giphy.gif)</center>
+
+One Continuous + Two Categorical
+===
+
+<p class = "question_master">What does the distribution of life expectancy look like by continent?</p>
 
 
 ```r
@@ -1056,7 +1056,7 @@ gapminder %>%
 
 <img src="eda_lecture-figure/unnamed-chunk-40-1.png" title="plot of chunk unnamed-chunk-40" alt="plot of chunk unnamed-chunk-40" style="display: block; margin: auto;" />
 
-One Continous + Two Categorial
+One Continuous + Two Categorical
 ===
 
 <p class = "question_master">What if we wanted line charts instead?</p>
@@ -1073,10 +1073,10 @@ gapminder %>%
 
 <img src="eda_lecture-figure/unnamed-chunk-41-1.png" title="plot of chunk unnamed-chunk-41" alt="plot of chunk unnamed-chunk-41" style="display: block; margin: auto;" />
 
-One Continous + One Categorial (rather than boxplot)
+One Continuous + One Categorical
 ===
 
-<p class = "question_master">What is the distribution of life expectacy (in 2007) by continent?</p>
+<p class = "question_master">What is the distribution of life expectancy (in 2007) by continent? (non-boxplot</p>
 
 
 ```r
@@ -1089,10 +1089,10 @@ gapminder %>%
 
 <img src="eda_lecture-figure/unnamed-chunk-42-1.png" title="plot of chunk unnamed-chunk-42" alt="plot of chunk unnamed-chunk-42" style="display: block; margin: auto;" />
 
-Two Continous + Two Categorial
+Two Continuous + Two Categorical
 ===
 
-What is the relationship between GDP per capita and life expectancy across continents and time?
+<p class = "question_master">What is the relationship between GDP per capita and life expectancy across continents and time?</p>
 
 
 ```r
@@ -1119,6 +1119,7 @@ gapminder %>%
 <img src="eda_lecture-figure/unnamed-chunk-44-1.png" title="plot of chunk unnamed-chunk-44" alt="plot of chunk unnamed-chunk-44" style="display: block; margin: auto;" />
 
 Linear Model for Each Year and Continent
+===
 
 
 ```r
@@ -1136,7 +1137,7 @@ gapminder %>%
 Particular Observations
 ===
 
-Are there any trends in particular countries over time?
+<p class = "question_master">Are there any trends in particular countries over time?</p>
 
 
 ```r
@@ -1153,7 +1154,7 @@ gapminder %>%
 Let's end on a positive note
 ===
 
-How is the distribution of life expecteny evolving over time?
+<p class = "question_master">How is the distribution of life expectancy evolving over time?</p>
 
 
 ```r
