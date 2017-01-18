@@ -9,6 +9,11 @@ css: jrf_style.css
 
 
 
+Make Data Your BBF
+========================================================
+
+<center>![bbf](./viz/bff.gif)</center>
+
 Agenda
 ========================================================
 
@@ -24,6 +29,8 @@ Data Analysis Lifecycle
 ========================================================
 
 <center>![](http://r4ds.had.co.nz/diagrams/data-science-explore.png)</center>
+
+<small>Source: [r4ds.had.co.nz/](http://r4ds.had.co.nz/)</small>
 
 What is EDA?
 ========================================================
