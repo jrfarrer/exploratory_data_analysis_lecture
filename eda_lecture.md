@@ -9,10 +9,10 @@ css: jrf_style.css
 
 
 
-Make Data Your BBF
+Make Data Your BFF
 ========================================================
 
-<center>![bbf](./viz/bff.gif)</center>
+<center>![bff](./viz/bff.gif)</center>
 
 Agenda
 ========================================================
@@ -28,7 +28,7 @@ type: sub-section
 Data Analysis Lifecycle
 ========================================================
 
-<center>![](http://r4ds.had.co.nz/diagrams/data-science-explore.png)</center>
+<center>![lifecycle](./viz/eda_lifecycle.png)</center>
 
 <small>Source: [r4ds.had.co.nz/](http://r4ds.had.co.nz/)</small>
 
@@ -48,7 +48,7 @@ left:40%
 
 Data Integrity vs Data Understanding
 
-![](http://productinnovationnow.com/wp-content/uploads/2013/06/Balance-Freedom-and-Control.jpg)
+![balance](./viz/balance.jpg)
 ***
 |Role|More likely to ...|
 |---|:---:|
@@ -93,7 +93,7 @@ library(tidyverse)
 R-God
 ========================================================
 
-<center>![](https://pix-media.priceonomics-media.com/blog/1001/HadleyObama.png)</center>
+<center>![](./viz/HadleyObama.png)</center>
 
 Packages Discussed Today
 ========================================================
