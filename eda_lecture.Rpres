@@ -90,7 +90,7 @@ library(tidyverse)
 
 [tidyverse](https://github.com/tidyverse/tidyverse) is a collection of R packages that share common philosophies and are designed to work together
 
-- created mostly by Hadley Wickam and maintained by RStudio
+- created mostly by Hadley Wickham and maintained by RStudio
 
 R-God
 ========================================================
