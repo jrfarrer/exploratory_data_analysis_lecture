@@ -8,3 +8,5 @@ Much of the material and examples is derived from
 - [dplyr tutorial](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
 - [gapminder ggplot tutorial](https://github.com/jennybc/ggplot2-tutorial/blob/master/gapminder-ggplot2-scatterplot.md)
 - [ggplot to learn visualization](http://sharpsightlabs.com/blog/r-package-think-about-visualization/)
+
+![](stat701_eda_lecture.png)
